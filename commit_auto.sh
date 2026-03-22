@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Message de commit par défaut avec la date
-COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Testing bare-metal"
+COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): bare-metal works, back to HAL for another try"
 
 # Aller dans le dossier du projet (à adapter)
 cd "C:\Users\kfree\Documents\Data_Elcool\Projets\Software Dev\SY-3_STMX" || exit
