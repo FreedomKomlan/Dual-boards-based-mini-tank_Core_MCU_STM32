@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Message de commit par défaut avec la date
-COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Testing HAL_IncTick() instead of my system clock configuration"
+COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Testing bare-metal"
 
 # Aller dans le dossier du projet (à adapter)
 cd "C:\Users\kfree\Documents\Data_Elcool\Projets\Software Dev\SY-3_STMX" || exit
