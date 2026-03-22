@@ -62,7 +62,10 @@ void SystemClock_Config(void)
         while(1);
     }
     // Initializes the CPU, AHB and APB buses clocks
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; // Configure HCLK, SYSCLK, PCLK1 and PCLK2
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK
+                            | RCC_CLOCKTYPE_SYSCLK
+                            | RCC_CLOCKTYPE_PCLK1
+                            | RCC_CLOCKTYPE_PCLK2; // Configure HCLK, SYSCLK, PCLK1 and PCLK2
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; // Use PLL output as system clock
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1; // HCLK = SYSCLK
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2; // PCLK1 = HCLK/2 (max 36 MHz for APB1)
