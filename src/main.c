@@ -24,8 +24,8 @@ int main(void)
     while (1)
     {
         // Main loop
-        // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0); // Toggle the LED state
-        // HAL_Delay(500); // Wait for 500 milliseconds
+        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0); // Toggle the LED state
+        HAL_Delay(500); // Wait for 500 milliseconds
     }
 }
 

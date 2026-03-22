@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Message de commit par défaut avec la date
-COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Led didn't blink. Set LED pin low to check because it might be connected to a different pin."
+COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Led didn't blink"
 
 # Aller dans le dossier du projet (à adapter)
 cd "C:\Users\kfree\Documents\Data_Elcool\Projets\Software Dev\SY-3_STMX" || exit
