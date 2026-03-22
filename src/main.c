@@ -10,7 +10,7 @@
 
 #include "stm32f1xx_hal.h"
 
-#define LED_PIN GPIO_PIN_1
+#define LED_PIN GPIO_PIN_0
 #define LED_GPIO_PORT GPIOA
 
 void SystemClock_Config(void);
