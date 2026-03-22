@@ -10,6 +10,9 @@
 
 #include "stm32f1xx_hal.h"
 
+#define LED_PIN GPIO_PIN_1
+#define LED_GPIO_PORT GPIOA
+
 void SystemClock_Config(void);
 void Led_Init(void);
 // void MX_GPIO_Init(void);
@@ -24,7 +27,7 @@ int main(void)
     while (1)
     {
         // Main loop
-        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0); // Toggle the LED state
+        HAL_GPIO_TogglePin(LED_GPIO_PORT, LED_PIN); // Toggle the LED state
         HAL_Delay(500); // Wait for 500 milliseconds
     }
 }
@@ -73,11 +76,11 @@ void Led_Init(void)
     // Initialize GPIO pins here if necessary
     __HAL_RCC_GPIOA_CLK_ENABLE(); // Enable clock for GPIOA
     
-    // Configure PA0 as output for the LED
-    GPIO_InitStruct.Pin = GPIO_PIN_0; // Configure PA0
+    // Configure PA1 as output for the LED
+    GPIO_InitStruct.Pin = LED_PIN; // Configure PA1
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; // Set as push-pull output
     GPIO_InitStruct.Pull = GPIO_NOPULL; // No pull-up or pull-down
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH; // Set high speed for the pin
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct); // Initialize GPIOA with the configuration
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET); // Start with LED off
+    HAL_GPIO_Init(LED_GPIO_PORT, &GPIO_InitStruct); // Initialize LED_GPIO_PORT with the configuration
+    HAL_GPIO_WritePin(LED_GPIO_PORT, LED_PIN, GPIO_PIN_SET); // Start with LED off
 }
