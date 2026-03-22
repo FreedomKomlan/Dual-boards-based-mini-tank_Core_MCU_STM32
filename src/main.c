@@ -8,61 +8,40 @@
     * Power supply: board powered by USB and led connected to 3.3V pin of the board.
 */
 
-#include "stm32f1xx_hal.h"
+#include "stm32f1xx.h"  // CMSIS device header (fourni par STM32CubeF1)
 
-static void SystemClock_Config(void);
-static void GPIO_LED_Init(void);
+#define LED_PORT   GPIOC
+#define LED_PIN    5U               // PC5
+
+static void delay(volatile uint32_t t)
+{
+    while (t--) __NOP();            // attente "busy-wait" (approx)
+}
 
 int main(void)
 {
-  HAL_Init();
-  SystemClock_Config();
-  GPIO_LED_Init();
+    /* 1) Activer l'horloge du port C (APB2) */
+    RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
 
-  // OFF au départ (active‑LOW => niveau HAUT = OFF)
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_SET);
+    /* 2) Configurer PC5 en sortie push‑pull 2 MHz
+          - Sur STM32F1, pins 0..7 utilisent CRL ; pins 8..15 CRH
+          - Chaque pin a un "nibble" de 4 bits : [CNF1:0 | MODE1:0]
+            Sortie push‑pull 2 MHz => CNF=00, MODE=10 => 0b0010 (0x2)     */
+    LED_PORT->CRL &= ~(0xFU << (LED_PIN * 4));      // clear le nibble de PC5
+    LED_PORT->CRL |=  (0x2U << (LED_PIN * 4));      // MODE=10, CNF=00
 
-  while (1) {
-    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_5);
-    HAL_Delay(300);
-  }
-}
+    /* 3) État initial OFF pour une LED active‑LOW (mettre la broche à 1) */
+    LED_PORT->BSRR = (1U << LED_PIN);               // SET => OFF (active‑LOW)
 
-static void GPIO_LED_Init(void)
-{
-  __HAL_RCC_GPIOC_CLK_ENABLE();              // <— IMPORTANT pour PCx
+    /* 4) Boucle : ON 300 ms, OFF 300 ms */
+    while (1)
+    {
+        /* ON (active‑LOW) : mettre la broche à 0 V */
+        LED_PORT->BRR  = (1U << LED_PIN);           // RESET => ON
+        delay(300000);
 
-  GPIO_InitTypeDef io = {0};
-  io.Pin   = GPIO_PIN_5;                     // PC5
-  io.Mode  = GPIO_MODE_OUTPUT_PP;            // sortie push‑pull
-  io.Pull  = GPIO_NOPULL;
-  io.Speed = GPIO_SPEED_FREQ_LOW;            // F1: _LOW/_MEDIUM/_HIGH
-  HAL_GPIO_Init(GPIOC, &io);
-}
-
-static void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef osc = {0};
-  RCC_ClkInitTypeDef clk = {0};
-
-  // HSE 8 MHz -> PLL x9 = 72 MHz
-  osc.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  osc.HSEState       = RCC_HSE_ON;
-  osc.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-  osc.HSIState       = RCC_HSI_ON;
-  osc.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  osc.PLL.PLLState   = RCC_PLL_ON;
-  osc.PLL.PLLSource  = RCC_PLLSOURCE_HSE;
-  osc.PLL.PLLMUL     = RCC_PLL_MUL9;
-  HAL_RCC_OscConfig(&osc);
-
-  clk.ClockType      = RCC_CLOCKTYPE_HCLK
-                     | RCC_CLOCKTYPE_SYSCLK
-                     | RCC_CLOCKTYPE_PCLK1
-                     | RCC_CLOCKTYPE_PCLK2;  // <— attention : bien des pipes `|`
-  clk.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
-  clk.AHBCLKDivider  = RCC_SYSCLK_DIV1;
-  clk.APB1CLKDivider = RCC_HCLK_DIV2;       // 36 MHz
-  clk.APB2CLKDivider = RCC_HCLK_DIV1;       // 72 MHz
-  HAL_RCC_ClockConfig(&clk, FLASH_LATENCY_2);
+        /* OFF : remettre la broche à 3.3 V */
+        LED_PORT->BSRR = (1U << LED_PIN);           // SET   => OFF
+        delay(300000);
+    }
 }
