@@ -62,7 +62,7 @@ void SystemClock_Config(void)
         while(1);
     }
     // Initializes the CPU, AHB and APB buses clocks
-    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK|RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2; // Configure HCLK, SYSCLK, PCLK1 and PCLK2
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2; // Configure HCLK, SYSCLK, PCLK1 and PCLK2
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK; // Use PLL output as system clock
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1; // HCLK = SYSCLK
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2; // PCLK1 = HCLK/2 (max 36 MHz for APB1)
@@ -84,7 +84,7 @@ void Led_Init(void)
     GPIO_InitStruct.Pin = LED_PIN; // Configure PA1
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; // Set as push-pull output
     GPIO_InitStruct.Pull = GPIO_NOPULL; // No pull-up or pull-down
-    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH; // Set high speed for the pin
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH; // Set high speed for the pin
     HAL_GPIO_Init(LED_GPIO_PORT, &GPIO_InitStruct); // Initialize LED_GPIO_PORT with the configuration
     HAL_GPIO_WritePin(LED_GPIO_PORT, LED_PIN, GPIO_PIN_SET); // Start with LED off
 }
