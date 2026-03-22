@@ -24,9 +24,8 @@ int main(void)
     while (1)
     {
         // Main loop
-        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0); // Toggle the LED state
-        HAL_Delay(500); // Wait for 500 milliseconds
-        
+        // HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0); // Toggle the LED state
+        // HAL_Delay(500); // Wait for 500 milliseconds
     }
 }
 
@@ -80,5 +79,5 @@ void Led_Init(void)
     GPIO_InitStruct.Pull = GPIO_NOPULL; // No pull-up or pull-down
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH; // Set high speed for the pin
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct); // Initialize GPIOA with the configuration
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET); // Start with LED off
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET); // Start with LED off
 }
