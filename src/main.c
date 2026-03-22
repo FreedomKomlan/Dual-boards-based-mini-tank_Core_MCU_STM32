@@ -89,5 +89,5 @@ void Led_Init(void)
     GPIO_InitStruct.Pull = GPIO_NOPULL; // No pull-up or pull-down
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH; // Set high speed for the pin
     HAL_GPIO_Init(LED_GPIO_PORT, &GPIO_InitStruct); // Initialize LED_GPIO_PORT with the configuration
-    HAL_GPIO_WritePin(LED_GPIO_PORT, LED_PIN, GPIO_PIN_SET); // Start with LED off
+    HAL_GPIO_WritePin(LED_GPIO_PORT, LED_PIN, GPIO_PIN_RESET); // Start with LED off
 }
