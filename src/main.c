@@ -8,40 +8,31 @@
     * Power supply: board powered by USB and led connected to 3.3V pin of the board.
 */
 
-#include "stm32f1xx.h"  // CMSIS device header (fourni par STM32CubeF1)
+#include "stm32f1xx_hal.h"
 
-#define LED_PORT   GPIOC
-#define LED_PIN    5U               // PC5
+#define LED_PIN GPIO_PIN_5
+#define LED_GPIO_PORT GPIOC
+#define LED_GPIO_CLK_ENABLE() __HAL_RCC_GPIOC_CLK_ENABLE()
 
-static void delay(volatile uint32_t t)
-{
-    while (t--) __NOP();            // attente "busy-wait" (approx)
-}
+void LED_Init(void);
 
-int main(void)
-{
-    /* 1) Activer l'horloge du port C (APB2) */
-    RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+int main(void) {
+    HAL_Init(); // Initialize the HAL Library
+    LED_Init(); // Initialize the LED GPIO
 
-    /* 2) Configurer PC5 en sortie push‑pull 2 MHz
-          - Sur STM32F1, pins 0..7 utilisent CRL ; pins 8..15 CRH
-          - Chaque pin a un "nibble" de 4 bits : [CNF1:0 | MODE1:0]
-            Sortie push‑pull 2 MHz => CNF=00, MODE=10 => 0b0010 (0x2)     */
-    LED_PORT->CRL &= ~(0xFU << (LED_PIN * 4));      // clear le nibble de PC5
-    LED_PORT->CRL |=  (0x2U << (LED_PIN * 4));      // MODE=10, CNF=00
-
-    /* 3) État initial OFF pour une LED active‑LOW (mettre la broche à 1) */
-    LED_PORT->BSRR = (1U << LED_PIN);               // SET => OFF (active‑LOW)
-
-    /* 4) Boucle : ON 300 ms, OFF 300 ms */
-    while (1)
-    {
-        /* ON (active‑LOW) : mettre la broche à 0 V */
-        LED_PORT->BRR  = (1U << LED_PIN);           // RESET => ON
-        delay(300000);
-
-        /* OFF : remettre la broche à 3.3 V */
-        LED_PORT->BSRR = (1U << LED_PIN);           // SET   => OFF
-        delay(300000);
+    while (1) {
+        HAL_GPIO_TogglePin(LED_GPIO_PORT, LED_PIN); // Toggle the LED
+        HAL_Delay(500); // Delay for 500 ms
     }
 }
+
+void LED_Init(void) {
+    LED_GPIO_CLK_ENABLE(); // Enable the clock for GPIOC
+    GPIO_InitTypeDef GPIO_InitStruct;
+    GPIO_InitStruct.Pin = LED_PIN; // Configure the pin for the LED
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP; // Set the pin as push-pull output
+    GPIO_InitStruct.Pull = GPIO_NOPULL; // No pull-up or pull-down resistors
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW; // Set the speed to low
+    HAL_GPIO_Init(LED_GPIO_PORT, &GPIO_InitStruct); // Initialize the GPIO with the specified settings
+}
+
