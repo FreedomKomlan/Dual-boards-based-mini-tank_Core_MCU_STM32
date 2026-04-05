@@ -1,35 +1,49 @@
-/*  
-    * File:   main.c
-    * Author: kfree
-    * Created on 2026-03-22
-    * Description: Main file for the SY-3_STMX project. This file initializes the system and contains the main loop.
-    * Note: Test blinking an led (for testing the board and the development environment). The led is connected to PA0 pin of the STM32F103RCT6 board. The system clock is configured to use the PLL with HSE as source, resulting in a system clock of 72 MHz.
-    * Hardware: STM32F103RCT6, Led connected to PA0, 220 ohm resistor in series, and GND.
-    * Power supply: board powered by USB and led connected to 3.3V pin of the board.
-*/
-
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
+int main(void)
+{
 
-int main(void) {
-    // Initialization section
-    HAL_Init();
-    SystemClock_Config();
-    MX_GPIO_Init();
+  HAL_Init();
+  SystemClock_Config();
+  MX_GPIO_Init();
 
-    while (1)
-    {
-        /* code */
-    }
-    
+  while (1)
+  {
+	  HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
+	  HAL_Delay(200);
+	  HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
+	  HAL_Delay(200);
+  }
+
 }
 
-void SystemClock_Config(void) {
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
@@ -62,8 +76,13 @@ void SystemClock_Config(void) {
   }
 }
 
-static void MX_GPIO_Init(void) {
-
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE BEGIN MX_GPIO_Init_1 */
 
@@ -75,39 +94,51 @@ static void MX_GPIO_Init(void) {
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_1_GPIO_PORT, LED_1_PIN, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : LED_1_Pin */
-  GPIO_InitStruct.Pin = LED_1_PIN;
+  GPIO_InitStruct.Pin = LED_1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_1_GPIO_PORT, &GPIO_InitStruct);
+  HAL_GPIO_Init(LED_1_GPIO_Port, &GPIO_InitStruct);
+
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
-void Error_Handler(void) {
+/* USER CODE BEGIN 4 */
 
-    __disable_irq();
-    while (1)
-    {
-        /* code */
-    }
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+  __disable_irq();
+  while (1)
+  {
+  }
+  /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
-/**  * @brief  Reports the name of the source file and the source line number
+#ifdef USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
   * @param  file: pointer to the source file name
   * @param  line: assert_param error line source number
   * @retval None
   */
-void assert_failed(uint8_t *file, uint32_t line) {
-    /* USER CODE BEGIN 6 */
-    /* User can add his own implementation to report the file name and line number,
-         ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-    /* USER CODE END 6 */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+  /* USER CODE BEGIN 6 */
+  /* User can add his own implementation to report the file name and line number,
+     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

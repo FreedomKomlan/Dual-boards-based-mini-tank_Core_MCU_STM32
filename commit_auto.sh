@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Message de commit par défaut avec la date
-COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Let test this STM32CubeIDE/MX generated code"
+COMMIT_MESSAGE="Commit on $(date '+%Y-%m-%d %H:%M'): Just found that just need to copy and paste Inc/Src from CubeMX after generating config code"
 
 # Aller dans le dossier du projet (à adapter)
 cd "C:\Users\kfree\Documents\Data_Elcool\Projets\Software Dev\SY-3_STMX" || exit

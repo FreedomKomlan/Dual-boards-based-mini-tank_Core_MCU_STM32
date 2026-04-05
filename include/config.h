@@ -7,7 +7,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define LED_1_PIN GPIO_PIN_5
-#define LED_1_GPIO_PORT GPIOC
+// #define LED_1_PIN GPIO_PIN_5
+// #define LED_1_GPIO_PORT GPIOC
 
 #endif // CONFIG_H
